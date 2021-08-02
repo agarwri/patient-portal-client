@@ -61,12 +61,13 @@ export default function NewNote() {
         <FormGroup controlId="content">
           <FormControl
             value={content}
+            placeholder="Write a description of your image"
             componentClass="textarea"
             onChange={e => setContent(e.target.value)}
           />
         </FormGroup>
         <FormGroup controlId="file">
-          <ControlLabel>Attachment</ControlLabel>
+          <ControlLabel>Upload image</ControlLabel>
           <FormControl onChange={handleFileChange} type="file" />
         </FormGroup>
         <LoaderButton
@@ -77,7 +78,7 @@ export default function NewNote() {
           isLoading={isLoading}
           disabled={!validateForm()}
         >
-          Create
+          Create Dermatology Record
         </LoaderButton>
       </form>
     </div>
