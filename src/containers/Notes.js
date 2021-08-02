@@ -19,7 +19,7 @@ export default function Notes() {
 
   useEffect(() => {
     function loadNote() {
-      const note = userPoolUserId != undefined ? API.get("patient-records", `/patients/${userPoolUserId}/${id}`) : API.get("patient-records", `/patientRecords/${id}`);
+      const note = userPoolUserId !== undefined ? API.get("patient-records", `/patients/${userPoolUserId}/${id}`) : API.get("patient-records", `/patientRecords/${id}`);
       return note;
     }
 
@@ -40,7 +40,7 @@ export default function Notes() {
     }
 
     onLoad();
-  }, [id]);
+  }, [id, userPoolUserId]);
 
   function validateForm() {
     return content.length > 0;
