@@ -125,6 +125,7 @@ export default function Notes() {
           <FormGroup controlId="content">
             <FormControl
               value={content}
+              placeholder="Write a description of your skin issue"
               componentClass="textarea"
               onChange={e => setContent(e.target.value)}
             />
