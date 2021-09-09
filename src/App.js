@@ -36,7 +36,7 @@ function App() {
       setIsAuthenticating(false);
     }
     onLoad();
-  }, []);
+  }, [isAdmin]);
 
 
 

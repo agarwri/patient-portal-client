@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import { useFormFields } from "../libs/hooksLib";
-import { API, Storage } from "aws-amplify";
 import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import { FormGroup, FormControl, ControlLabel, HelpBlock } from "react-bootstrap";

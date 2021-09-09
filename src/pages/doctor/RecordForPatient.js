@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { API, Storage } from "aws-amplify";
 import { onError } from "../../libs/errorLib";
 import AppointmentRecordForm from "../../components/AppointmentRecordForm";
-import { configureScope } from "@sentry/browser";
 
 export default function Notes() {
   
@@ -65,9 +64,6 @@ export default function Notes() {
     return API.del("patient-records", `/patients/records/${userPoolUserId}/${id}`);
   }
 
-  function uploadFiles() {
-
-  }
  
   return (
     <div className="RecordForPatient">

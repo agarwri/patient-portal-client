@@ -28,7 +28,7 @@ export default function Settings() {
         setIsLoading(false);
       }
       onLoad();
-    }, []);
+    }, [userPoolUserId]);
   
     
 

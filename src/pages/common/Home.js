@@ -37,7 +37,7 @@ export default function Home() {
     }
 
     onLoad();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isAdmin]);
 
   function loadNotes() {
     return API.get("patient-records", "/patientRecords");
