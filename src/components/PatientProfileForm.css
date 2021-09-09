@@ -1,0 +1,68 @@
+@media all and (min-width: 480px) {
+    .Profile {
+      padding: 60px 0;
+    }
+  
+    .Profile form {
+      margin: 0 auto;
+      max-width: 320px;
+    }
+
+    @media (min-width: 992px) {
+
+      .pl-lg-4 {
+        padding-left: 1.5rem !important;
+      }
+    
+      .pt-lg-8 {
+        padding-top: 8rem !important;
+      }
+    
+      .ml-lg-auto {
+        margin-left: auto !important;
+      }
+    }
+    
+    .heading-small {
+        font-size: .75rem;
+        padding-top: .25rem;
+        padding-bottom: .25rem;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+    
+    .text-muted {
+        color: #8898aa !important;
+    }
+    
+    .col-4,
+    .col-8,
+    .col,
+    .col-md-10,
+    .col-md-12,
+    .col-lg-3,
+    .col-lg-4,
+    .col-lg-6,
+    .col-lg-7,
+    .col-xl-4,
+    .col-xl-6,
+    .col-xl-8 {
+      position: relative;
+      width: 100%;
+      min-height: 1px;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+    
+    .col {
+      max-width: 100%;
+      flex-basis: 0;
+      flex-grow: 1;
+    }
+    
+    .mb-4,
+    .my-4 {
+      margin-bottom: 1.5rem !important;
+    }
+}
+

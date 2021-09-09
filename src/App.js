@@ -14,13 +14,18 @@ function App() {
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [userGroups, setUserGroups] = useState([""]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     async function onLoad() {
       try {
         await Auth.currentSession();
         let user =  await Auth.currentAuthenticatedUser();
-        setUserGroups(user.signInUserSession.accessToken.payload["cognito:groups"]);
+        let userGroups = await user.signInUserSession.accessToken.payload["cognito:groups"];
+        setUserGroups(userGroups);
+        console.log(userGroups);
+        setIsAdmin(userGroups.includes("AdminUsers") ? true : false);
+        console.log(isAdmin);
         userHasAuthenticated(true);
       }
       catch(e) {
@@ -55,8 +60,8 @@ function App() {
             <Nav pullRight>
               {isAuthenticated ? (
                 <>
-                  <LinkContainer to="/settings">
-                    <NavItem>Settings</NavItem>
+                  <LinkContainer to="/profile">
+                    <NavItem>Profile</NavItem>
                   </LinkContainer>
                   <NavItem onClick={handleLogout}>Logout</NavItem>
                 </>
@@ -74,7 +79,7 @@ function App() {
           </Navbar.Collapse>
         </Navbar>
         <ErrorBoundary>
-          <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userGroups, setUserGroups }}>
+          <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userGroups, setUserGroups, isAdmin, setIsAdmin }}>
             <Routes />
           </AppContext.Provider>
         </ErrorBoundary>

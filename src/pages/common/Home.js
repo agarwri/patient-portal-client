@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
-import { useAppContext } from "../libs/contextLib";
-import { onError } from "../libs/errorLib";
+import { useAppContext } from "../../libs/contextLib";
+import { onError } from "../../libs/errorLib";
 import "./Home.css";
 import { API } from "aws-amplify";
 import { LinkContainer } from "react-router-bootstrap";
@@ -12,7 +12,7 @@ export default function Home() {
   const [notes, setNotes] = useState([]);
   const [users, setUsers] = useState([]);
   const { isAuthenticated } = useAppContext();
-  const { userGroups } = useAppContext();
+  const { isAdmin } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -22,10 +22,13 @@ export default function Home() {
       }
 
       try {
-        const notes = await loadNotes();
-        const users = await loadUsers();
-        setNotes(notes);
-        setUsers(users);
+        if (isAdmin) {
+          const users = await loadUsers();
+          setUsers(users);
+        } else {
+          const notes = await loadNotes();
+          setNotes(notes);
+        }
       } catch (e) {
         onError(e);
       }
@@ -47,16 +50,16 @@ export default function Home() {
   function renderNotesList(notes) {
     return [{}].concat(notes).map((note, i) =>
       i !== 0 ? (
-        <LinkContainer key={note.recordId} to={`/notes/${note.recordId}`}>
-          <ListGroupItem header={note.content.trim().split("\n")[0]}>
-            {"Created: " + new Date(note.createdAt).toLocaleString()}
+        <LinkContainer key={note.recordId} to={`/records/${note.recordId}`}>
+          <ListGroupItem header={note.reason.trim().split("\n")[0]}>
+            {"appointment date: " + (note.date ? note.date : "TBD")}
           </ListGroupItem>
         </LinkContainer>
       ) : (
-        <LinkContainer key="new" to="/notes/new">
+        <LinkContainer key="new" to="/records/new">
           <ListGroupItem>
             <h4>
-              <b>{"\uFF0B"}</b> Create a new dermatology record
+              <b>{"\uFF0B"}</b> Create a new appointment record
             </h4>
           </ListGroupItem>
         </LinkContainer>
@@ -67,8 +70,8 @@ export default function Home() {
 
   function renderUsersList(users) {
     return users.map((user, i) =>
-        <LinkContainer key={user.Username} to={`/users/${user.Username}`}>
-          <ListGroupItem header={user.Email}>
+        <LinkContainer key={user.Username} to={`/patients/profile/${user.Username}`}>
+          <ListGroupItem header={user.Name}>
             {"Created: " + new Date(user.UserCreateDate).toLocaleString()}
           </ListGroupItem>
         </LinkContainer>
@@ -95,7 +98,7 @@ export default function Home() {
   function renderNotes() {
     return (
       <div className="notes">
-        <PageHeader>Your Dermatology Records</PageHeader>
+        <PageHeader>Your Appointment Records</PageHeader>
         <ListGroup>
           {!isLoading && renderNotesList(notes)}
         </ListGroup>
@@ -116,7 +119,7 @@ export default function Home() {
 
   return (
     <div className="Home">
-      {!isAuthenticated ? renderLander() : userGroups.includes("AdminUsers") ? renderUsers() : renderNotes()}
+      {!isAuthenticated ? renderLander() : isAdmin ? renderUsers() : renderNotes()}
     </div>
   );
 }

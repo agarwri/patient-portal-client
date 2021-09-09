@@ -6,16 +6,18 @@ import {
   FormControl,
   ControlLabel
 } from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
-import { useAppContext } from "../libs/contextLib";
-import { useFormFields } from "../libs/hooksLib";
-import { onError } from "../libs/errorLib";
+import LoaderButton from "../../components/LoaderButton";
+import { useAppContext } from "../../libs/contextLib";
+import { useFormFields } from "../../libs/hooksLib";
+import { onError } from "../../libs/errorLib";
 import "./Signup.css";
 import { Auth } from "aws-amplify";
 
 export default function Signup() {
   const [fields, handleFieldChange] = useFormFields({
+    fullname: "",
     email: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: "",
     confirmationCode: "",
@@ -27,6 +29,7 @@ export default function Signup() {
 
   function validateForm() {
     return (
+      fields.fullname.length > 0 &&
       fields.email.length > 0 &&
       fields.password.length > 0 &&
       fields.password === fields.confirmPassword
@@ -46,6 +49,10 @@ export default function Signup() {
       const newUser = await Auth.signUp({
         username: fields.email,
         password: fields.password,
+        attributes: {
+          name: fields.fullname,
+          phone_number: fields.phoneNumber,
+        }
       });
       setIsLoading(false);
       setNewUser(newUser);
@@ -102,8 +109,26 @@ export default function Signup() {
   function renderForm() {
     return (
       <form onSubmit={handleSubmit}>
+        <FormGroup controlId="fullname" bsSize="large">
+          <ControlLabel bsClass="required">Full Name</ControlLabel>
+          <FormControl
+            autoFocus
+            type="text"
+            value={fields.fullname}
+            onChange={handleFieldChange}
+          />
+        </FormGroup>
+        <FormGroup controlId="phoneNumber" bsSize="large">
+          <ControlLabel>Phone Number</ControlLabel>
+          <FormControl
+            autoFocus
+            type="text"
+            value={fields.phoneNumber}
+            onChange={handleFieldChange}
+          />
+        </FormGroup>
         <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
+          <ControlLabel bsClass="required">Email</ControlLabel>
           <FormControl
             autoFocus
             type="email"
@@ -112,7 +137,7 @@ export default function Signup() {
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
+          <ControlLabel bsClass="required">Password</ControlLabel>
           <FormControl
             type="password"
             value={fields.password}
@@ -120,7 +145,7 @@ export default function Signup() {
           />
         </FormGroup>
         <FormGroup controlId="confirmPassword" bsSize="large">
-          <ControlLabel>Confirm Password</ControlLabel>
+          <ControlLabel bsClass="required">Confirm Password</ControlLabel>
           <FormControl
             type="password"
             onChange={handleFieldChange}
